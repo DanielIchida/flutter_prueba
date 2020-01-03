@@ -12,7 +12,27 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+          primarySwatch: Colors.green,
+          accentColor: Colors.redAccent,
+          fontFamily: 'Quicksand',
+          textTheme: ThemeData.light().textTheme.copyWith(
+              title: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold
+              )
+          ),
+          appBarTheme: AppBarTheme(
+             textTheme: ThemeData.light().textTheme.copyWith(
+                 title: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold
+                 )
+             )
+          )
+      ),
       initialRoute: 'basicodos',
       routes: {
         'basico': (BuildContext context) => HomePage(),
