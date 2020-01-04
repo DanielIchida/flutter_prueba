@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_prueba/src/pages/widgets/chart.dart';
 import 'package:flutter_prueba/src/pages/widgets/new_transaction.dart';
 import 'package:flutter_prueba/src/pages/widgets/transaction_list.dart';
 
@@ -14,14 +15,26 @@ class ProductosPage extends StatefulWidget {
 class _ProductosPageState extends State<ProductosPage> {
 
   final List<Transaction> transactions = [
-    Transaction(
+    /*Transaction(
         id: 't1', title: 'New Shoes', amount: 69.9, date: DateTime.now()),
     Transaction(
         id: 't2',
         title: 'Weekly Groceries',
         amount: 16.53,
-        date: DateTime.now())
+        date: DateTime.now())*/
   ];
+
+  List<Transaction> get _recentTransaction {
+     return transactions.where((tx){
+         return tx.date.isAfter(
+            DateTime.now().subtract(
+                Duration(
+                   days: 7
+                )
+            )
+         );
+     }).toList();
+  }
 
   void _addNewTransaction(String txtTitle, double txAmount) {
     final newTx = Transaction(
@@ -62,10 +75,7 @@ class _ProductosPageState extends State<ProductosPage> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Container(
-                width: double.infinity,
-                child: Card(color: Colors.blue, child: Text("CHART"), elevation: 5),
-              ),
+              Chart(_recentTransaction),
               TransactionList(transactions)
             ],
           ),
