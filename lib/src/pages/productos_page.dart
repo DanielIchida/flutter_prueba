@@ -36,11 +36,11 @@ class _ProductosPageState extends State<ProductosPage> {
      }).toList();
   }
 
-  void _addNewTransaction(String txtTitle, double txAmount) {
+  void _addNewTransaction(String txtTitle, double txAmount,DateTime chosenDate) {
     final newTx = Transaction(
         title: txtTitle,
         amount: txAmount,
-        date: DateTime.now(),
+        date: chosenDate,
         id: DateTime.now().toString());
     setState(() {
       transactions.add(newTx);
