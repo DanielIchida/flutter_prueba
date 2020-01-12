@@ -35,11 +35,11 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(groupedTransactionValues);
-    return Card(
-        elevation: 6,
-        margin: EdgeInsets.all(20),
-        child: Container(
+    return Container(
+        child: Card(
+          elevation: 6,
+          margin: EdgeInsets.all(20),
+          child: Container(
             padding: EdgeInsets.all(20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -54,6 +54,7 @@ class Chart extends StatelessWidget {
                 );
               }).toList(),
             ),
+          ),
         ),
     );
   }

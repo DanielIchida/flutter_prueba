@@ -14,6 +14,8 @@ class ProductosPage extends StatefulWidget {
 
 class _ProductosPageState extends State<ProductosPage> {
 
+  bool _showChart = false;
+
   final List<Transaction> transactions = [
     /*Transaction(
         id: 't1', title: 'New Shoes', amount: 69.9, date: DateTime.now()),
@@ -47,6 +49,8 @@ class _ProductosPageState extends State<ProductosPage> {
     });
   }
 
+
+
   void startAddNewTransacction(BuildContext ctx){
      showModalBottomSheet(context: ctx,
          builder: (_) {
@@ -58,25 +62,72 @@ class _ProductosPageState extends State<ProductosPage> {
      });
   }
 
+  void _deleteTransaction(String id){
+     setState(() {
+         transactions.removeWhere((tx) => tx.id == id);
+     });
+  }
+
+
+  
   @override
   Widget build(BuildContext context) {
+
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    final appBar = AppBar(
+      title: Text("Flutter App"),
+      actions: <Widget>[
+        IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => startAddNewTransacction(context)
+        )
+      ],
+    );
+
+    final listWidget =  Container(
+      height: (MediaQuery.of(context).size.height
+          - appBar.preferredSize.height
+          -
+          MediaQuery.of(context).padding.top) * 0.7,
+      child: TransactionList(transactions,_deleteTransaction),
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Flutter App"),
-        actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () => startAddNewTransacction(context)
-            )
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
           child: Column(
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Chart(_recentTransaction),
-              TransactionList(transactions)
+                if(isLandscape) Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                    Text("Show Chart"),
+                    Switch(
+                      value: _showChart,
+                      onChanged: (val) {
+                         setState(() {
+                             _showChart = val;
+                         });
+                      },
+                    )
+                ],
+               ),
+              if(!isLandscape)
+                Container(
+                  height: (MediaQuery.of(context).size.height
+                      - appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) * 0.3,
+                  child: Chart(_recentTransaction),
+                ),
+                if(!isLandscape) listWidget,
+                if(isLandscape) _showChart ? Container(
+                 height: (MediaQuery.of(context).size.height
+                     - appBar.preferredSize.height -
+                     MediaQuery.of(context).padding.top) * 0.7,
+                 child: Chart(_recentTransaction),
+              ) : listWidget
             ],
           ),
       ),
